@@ -1,3 +1,0 @@
-public interface IViewShow : IShow
-{
-}

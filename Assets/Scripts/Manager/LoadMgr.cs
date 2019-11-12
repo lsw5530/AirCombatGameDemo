@@ -1,36 +1,28 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class LoadMgr : NormalSingleton<LoadMgr>,ILoader
+public class LoadMgr : NormalSingleton<LoadMgr>
 {
-	[SerializeField]
 	private ILoader _loader;
 
 	public LoadMgr()
 	{
-		_loader  = new ResourceLoader();
+		_loader = new ResourceLoader();
 	}
-
-	public GameObject LoadPrefab(string path, Transform parent = null)
+	
+	public GameObject LoadPrefab(string path,Transform parent = null)
 	{
 		return _loader.LoadPrefab(path, parent);
 	}
 
-	public void LoadConfig(string path, Action<object> complete)
+	public Sprite LoadSprite(string path)
 	{
-		_loader.LoadConfig(path,complete);
+		return _loader.LoadSprite(path);
 	}
-
-	public T Load<T>(string path) where T : Object
+	
+	public Sprite[] LoadAllSprites(string path)
 	{
-		return _loader.Load<T>(path);
-	}
-
-	public T[] LoadAll<T>(string path) where T : Object
-	{
-		return _loader.LoadAll<T>(path);
+		return _loader.LoadAllSprites(path);
 	}
 }

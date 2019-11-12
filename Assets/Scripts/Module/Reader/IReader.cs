@@ -7,7 +7,5 @@ public interface IReader
 {
     IReader this[string key] { get; }
     IReader this[int key] { get; }
-    void Get<T>(Action<T> callBack);
-    void SetData(object data);
-    ICollection<string> Keys();
+    void Get<T>(Action<T> complete);
 }

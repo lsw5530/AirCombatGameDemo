@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[BindPrefab(Paths.SELECTED_HERO_VIEW)]
 public class SelectedHeroView : ViewBase {
+
     protected override void InitChild()
     {
         Util.Get("Heros").Go.AddComponent<SelectHero>();
-        Util.Get("OK/Start").AddListener(() =>
+        Util.Get("Strengthen").AddListener(() =>
         {
-            //todo:切换到选择关卡界面
+            UIManager.Single.Show(Paths.STRENGTHEN_VIEW);
         });
         
         Util.Get("Exit").AddListener(() =>
@@ -17,9 +17,9 @@ public class SelectedHeroView : ViewBase {
             Application.Quit();
         });
         
-        Util.Get("Strengthen").AddListener(() =>
+        Util.Get("OK/Start").AddListener(() =>
         {
-            UIManager.Single.Show(Paths.STRENGTHEN_VIEW);
+            UIManager.Single.Show(Paths.LEVELS_VIEW);
         });
     }
 }

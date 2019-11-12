@@ -8,14 +8,14 @@ public class UiUtil : MonoBehaviour
 {
 
 	private Dictionary<string, UiUtilData> _datas;
-
+	
 	public void Init()
 	{
 		_datas = new Dictionary<string, UiUtilData>();
 		RectTransform rect = transform.GetComponent<RectTransform>();
-		foreach (RectTransform rectTransform in rect)
+		foreach (RectTransform trans in rect)
 		{
-			_datas.Add(rectTransform.name,new UiUtilData(rectTransform));
+			_datas.Add(trans.name,new UiUtilData(trans));
 		}
 	}
 
@@ -27,59 +27,47 @@ public class UiUtil : MonoBehaviour
 		}
 		else
 		{
-			Transform temp = transform.Find(name);
-			if (temp == null)
+			Transform trans = transform.Find(name);
+			if (trans == null)
 			{
-				Debug.LogError("无法按照路径查找到物体，路径为："+name);
-				return null;
+				Debug.LogError("can not find Gameobject name is "+name);
+				return new UiUtilData();
 			}
 			else
 			{
-				_datas.Add(name,new UiUtilData(temp.GetComponent<RectTransform>()));
+				_datas.Add(name,new UiUtilData(trans.GetComponent<RectTransform>()));
 				return _datas[name];
 			}
 		}
 	}
 }
 
-public class UiUtilData
+public struct UiUtilData
 {
 	public GameObject Go { get; private set; }
-	public RectTransform RectTrans { get; private set; }
+	public RectTransform RectTrans { get; set; }
 	public Button Btn { get; private set; }
 	public Image Img { get; private set; }
 	public Text Text { get; private set; }
 
-	public UiUtilData(RectTransform rectTrans)
+	public UiUtilData(RectTransform rect) : this()
 	{
-		RectTrans = rectTrans;
-		Go = rectTrans.gameObject;
-		Btn = rectTrans.GetComponent<Button>();
-		Img = RectTrans.GetComponent<Image>();
-		Text = rectTrans.GetComponent<Text>();
+		RectTrans = rect;
+		Go = rect.gameObject;
+		Btn = rect.GetComponent<Button>();
+		Img = rect.GetComponent<Image>();
+		Text = rect.GetComponent<Text>();
 	}
 
-	public void AddListener(Action action)
+	public void AddListener(Action callBack)
 	{
 		if (Btn != null)
 		{
-			Btn.onClick.AddListener(()=>action());
+			Btn.onClick.AddListener(()=>callBack());
 		}
 		else
 		{
-			Debug.LogError("当前物体上没有button组件，物体名称为"+Go.name);
-		}
-	}
-
-	public void SetSprite(Sprite sprite)
-	{
-		if (Img != null)
-		{
-			Img.sprite = sprite;
-		}
-		else
-		{
-			Debug.LogError("当前物体上没有image组件，物体名称为"+Go.name);
+			Debug.LogError("can not find Button,gameobject name is "+Go.name);
 		}
 	}
 }
